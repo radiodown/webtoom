@@ -9,6 +9,7 @@ React + Vite로 만든 개인 웹툰 뷰어입니다. GitHub Pages 주소는 htt
 - **1화 · 클로드**: 5장 — https://radiodown.github.io/webtoom/?episode=01
 - **2화 · 프라이데이**: 5장 — https://radiodown.github.io/webtoom/?episode=02
 - **3화 · 컨텍스트 0%**: 9장 — https://radiodown.github.io/webtoom/?episode=03
+- **4화 · 프라이데이의 조언**: 8장 — https://radiodown.github.io/webtoom/?episode=04
 
 읽는 화면 위쪽의 회차 버튼, 아래쪽의 이전·다음 화, 헤더의 회차 목록으로 이동할 수 있습니다. 브라우저 뒤로 가기도 지원합니다. 기본 이미지 간격은 **12px**, 너비는 **800px**이며 모바일에서는 화면 폭에 맞춥니다. 보기 설정, 밝은 테마, 회차별 이어서 읽기를 지원합니다. 설정과 위치는 브라우저에 저장됩니다.
 

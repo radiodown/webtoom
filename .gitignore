@@ -5,3 +5,4 @@ Thumbs.db
 .preview/
 dist/
 src/episodes.generated.js
+src/characters.generated.js

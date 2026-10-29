@@ -2,21 +2,14 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import episodes from './episodes.generated.js';
 import { defaults, readSettings, readPosition, writeStorage } from './storage.js';
 import ShareEpisode from './ShareEpisode.jsx';
+import EpisodeLink, { routeHref, routeId } from './navigation.jsx';
+import CharacterBook from './CharacterBook.jsx';
+import characters from './characters.generated.js';
 
-const episodeHref = id => `${import.meta.env.BASE_URL}${id ? `?episode=${id}` : ''}`;
-const routeId = () => new URLSearchParams(location.search).get('episode')?.padStart(2, '0') || null;
 const behavior = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
 
 function BookIcon() {
   return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4.5h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a3 3 0 0 0-2 1 3 3 0 0 0-2-1H4zM12 5.5v15" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" /></svg>;
-}
-
-function EpisodeLink({ id, navigate, children, ...props }) {
-  return <a href={episodeHref(id)} {...props} onClick={event => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    navigate(id);
-  }}>{children}</a>;
 }
 
 function Settings({ open, close, settings, setSettings }) {
@@ -139,11 +132,13 @@ export default function App() {
   const [settings, setSettings] = useState(readSettings);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const episode = episodes.find(item => item.id === id);
+  const isCharacterBook = id === 'characters' || id?.startsWith('character:');
+  const character = isCharacterBook ? characters.find(item => `character:${item.id}` === id) : undefined;
 
   function navigate(nextId) {
     const normalized = nextId || null;
     if (normalized === id) { window.scrollTo({ top: 0, behavior: behavior() }); return; }
-    history.pushState(null, '', episodeHref(normalized));
+    history.pushState(null, '', routeHref(normalized));
     setId(normalized);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
@@ -153,7 +148,7 @@ export default function App() {
     window.addEventListener('popstate', pop);
     return () => window.removeEventListener('popstate', pop);
   }, []);
-  useEffect(() => { document.title = episode ? `${Number(episode.id)}화 · ${episode.title} — 나의 웹툰` : '나의 웹툰 — 회차 목록'; }, [episode]);
+  useEffect(() => { document.title = isCharacterBook ? `${character ? `${character.name} · ` : ''}설정집 — 나의 웹툰` : episode ? `${Number(episode.id)}화 · ${episode.title} — 나의 웹툰` : '나의 웹툰 — 회차 목록'; }, [episode, isCharacterBook, character]);
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.theme = settings.theme;
@@ -165,8 +160,8 @@ export default function App() {
 
   return <>
     <a className="skip-link" href={episode ? '#reader' : '#main'}>본문으로 바로 가기</a>
-    <header className="site-header"><EpisodeLink navigate={navigate} className="brand" aria-label="나의 웹툰 전체 회차"><BookIcon /><span>나의 웹툰<span className="brand-dot">.</span></span></EpisodeLink><span className="header-episode">{episode ? `${episode.id} / ${episode.title}` : `전체 ${episodes.length}개 회차`}</span><nav className="header-actions" aria-label="뷰어 도구"><EpisodeLink navigate={navigate} className="header-library-link">회차 목록</EpisodeLink><button className="icon-button" onClick={() => setSettings({ ...settings, theme: settings.theme === 'dark' ? 'light' : 'dark' })} aria-label={settings.theme === 'dark' ? '밝은 화면으로 변경' : '어두운 화면으로 변경'}>{settings.theme === 'dark' ? '☼' : '☾'}</button><button className="settings-button" aria-haspopup="dialog" onClick={() => setSettingsOpen(true)}>보기 설정</button></nav></header>
-    {episode ? <Reader key={episode.id} episode={episode} navigate={navigate} settings={settings} /> : <Library navigate={navigate} />}
+    <header className="site-header"><EpisodeLink navigate={navigate} className="brand" aria-label="나의 웹툰 전체 회차"><BookIcon /><span>나의 웹툰<span className="brand-dot">.</span></span></EpisodeLink><span className="header-episode">{isCharacterBook ? '인물 설정집' : episode ? `${episode.id} / ${episode.title}` : `전체 ${episodes.length}개 회차`}</span><nav className="header-actions" aria-label="뷰어 도구"><EpisodeLink navigate={navigate} className="header-library-link" aria-current={!isCharacterBook && !episode ? 'page' : undefined}>회차 목록</EpisodeLink><EpisodeLink id="characters" navigate={navigate} className="header-library-link" aria-current={isCharacterBook ? 'page' : undefined}>설정집</EpisodeLink><button className="icon-button" onClick={() => setSettings({ ...settings, theme: settings.theme === 'dark' ? 'light' : 'dark' })} aria-label={settings.theme === 'dark' ? '밝은 화면으로 변경' : '어두운 화면으로 변경'}>{settings.theme === 'dark' ? '☼' : '☾'}</button><button className="settings-button" aria-haspopup="dialog" onClick={() => setSettingsOpen(true)}>보기 설정</button></nav></header>
+    {isCharacterBook ? <CharacterBook character={character} navigate={navigate} /> : episode ? <Reader key={episode.id} episode={episode} navigate={navigate} settings={settings} /> : <Library navigate={navigate} />}
     <footer className="site-footer"><span>나의 웹툰.</span><span>이야기가 머무는 작은 공간</span></footer>
     <Settings open={settingsOpen} close={() => setSettingsOpen(false)} settings={settings} setSettings={setSettings} />
   </>;

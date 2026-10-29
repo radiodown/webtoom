@@ -22,9 +22,9 @@ python -m http.server 8000
 ## GitHub Pages 배포
 
 1. GitHub 저장소를 만들고 이 폴더의 파일과 **이미지 폴더 전체**를 저장소 최상위에 올립니다. 숨김 파일인 `.nojekyll`도 포함하세요.
-2. 저장소의 **Settings → Pages**에서 배포 소스를 **Deploy from a branch**로 선택합니다.
-3. 브랜치를 **main**, 폴더를 **/ (root)**로 선택하고 저장합니다.
-4. 배포가 끝나면 Pages 화면에 표시된 주소로 접속합니다.
+2. 저장소의 **Settings → Pages**에서 배포 소스를 **GitHub Actions**로 선택합니다.
+3. `main`에 푸시하면 `.github/workflows/pages.yml`이 자동으로 배포합니다. **Actions → Deploy webtoon to GitHub Pages → Run workflow**로 직접 실행할 수도 있습니다.
+4. 배포가 끝나면 `https://radiodown.github.io/webtoom/`으로 접속합니다.
 
 모든 리소스가 상대 경로를 사용하므로 `https://계정.github.io/저장소이름/` 같은 프로젝트 주소에서도 동작합니다. 폴더명의 한글, 공백, `%`는 코드에서 URL 인코딩합니다.
 

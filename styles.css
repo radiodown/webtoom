@@ -149,3 +149,22 @@ dialog::backdrop{background:#0009;backdrop-filter:blur(5px)}
 @media(max-width:900px){.header-episode{display:none}}
 @media(max-width:700px){.character-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.character-card-info{padding:16px 14px 4px}.character-card h2{font-size:21px}.character-initial{width:60px;height:60px;font-size:26px}.character-sheet figcaption{flex-wrap:wrap;gap:0}.character-sheet h2{flex-basis:100%}.character-sheet figcaption a{font-size:11px}.character-sheets{gap:28px}}
 @media(max-width:380px){.site-header{gap:6px}.brand{font-size:14px;gap:0}.brand svg{display:none}.header-actions{gap:8px}.icon-button{width:30px;height:36px}.settings-button{padding:9px 0}.character-grid{gap:12px}.character-card h2{font-size:19px}}
+.character-introduction{margin:0 0 40px;min-width:0}
+.character-introduction>h2{font-size:21px;letter-spacing:-.5px;margin:0 0 18px}
+.character-profile-note{padding:16px 20px;border-left:3px solid var(--accent);background:var(--surface);font-size:12px;color:var(--muted);line-height:1.9;margin:0 0 22px;overflow-wrap:anywhere}
+.character-profile-note strong{color:var(--text);font-weight:500}
+.character-profile-table{max-width:100%;overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+.character-profile-table:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.character-profile-table table{width:100%;min-width:780px;border-collapse:collapse;text-align:left;font-size:12px;line-height:1.9}
+.character-profile-table th,.character-profile-table td{padding:16px;vertical-align:top;border-bottom:1px solid var(--border)}
+.character-profile-table thead th{background:var(--surface);color:var(--muted);font-size:11px;font-weight:500;white-space:nowrap}
+.character-profile-table tbody th{font-weight:600;white-space:nowrap}
+.character-profile-table tbody th span{display:block;color:var(--muted);font-size:11px;font-weight:400}
+.character-profile-table td:not(:last-child){white-space:nowrap}
+.character-profile-table td:last-child{min-width:320px}
+.character-profile-table tbody tr:last-child>*{border-bottom:0}
+.character-introduction>h3{font-size:15px;margin:26px 0 12px}
+.character-drawing-guide{padding-left:20px;margin:0;color:var(--muted);font-size:13px;line-height:1.9}
+.character-drawing-guide li+li{margin-top:8px}
+.character-drawing-guide strong{color:var(--text);font-weight:500}
+@media(max-width:700px){.character-introduction>h2{font-size:19px}.character-profile-note{padding:14px 16px}.character-profile-table th,.character-profile-table td{padding:12px}.character-drawing-guide{font-size:12px}}

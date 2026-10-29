@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import episodes from './episodes.generated.js';
 import { defaults, readSettings, readPosition, writeStorage } from './storage.js';
+import ShareEpisode from './ShareEpisode.jsx';
 
 const episodeHref = id => `${import.meta.env.BASE_URL}${id ? `?episode=${id}` : ''}`;
 const routeId = () => new URLSearchParams(location.search).get('episode')?.padStart(2, '0') || null;
@@ -116,6 +117,7 @@ function Reader({ episode, navigate, settings }) {
         <nav className="episode-tabs" aria-label="회차 선택">{episodes.map(item => <EpisodeLink key={item.id} id={item.id} navigate={navigate} aria-current={item.id === episode.id ? 'page' : undefined}>{Number(item.id)}화 · {item.title}</EpisodeLink>)}</nav>
         <div className="episode-meta"><span className="episode-badge">EPISODE {episode.id}</span><span>{episode.images.length}장의 이야기</span></div>
         <div className="title-row"><h1 id="episode-title">{episode.title}</h1><span className="reader-episode-number">{Number(episode.id)}화</span></div>
+        <ShareEpisode episode={episode} />
         <p className="reading-hint">아래로 스크롤하며 천천히 읽어보세요 <span aria-hidden="true">↓</span></p>
         {showResume && <div className="resume-bar"><span>{resume.page + 1}번째 이미지까지 읽었어요.</span><button onClick={resumeReading}>이어서 읽기 ↘</button><button className="resume-dismiss" onClick={() => setShowResume(false)} aria-label="이어서 읽기 안내 닫기">×</button></div>}
       </section>

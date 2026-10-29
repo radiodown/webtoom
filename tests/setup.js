@@ -8,6 +8,7 @@ beforeEach(() => {
   Object.defineProperty(window, 'scrollY', { value: 0, writable: true, configurable: true });
   window.scrollTo = vi.fn(({ top = 0 }) => { window.scrollY = top; });
   window.matchMedia = vi.fn(() => ({ matches: true }));
+  Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true });
   HTMLElement.prototype.scrollIntoView = vi.fn();
   HTMLDialogElement.prototype.showModal = function () { this.open = true; };
   HTMLDialogElement.prototype.close = function () { this.open = false; };

@@ -91,4 +91,41 @@ describe('React viewer', () => {
     render(<App />);
     expect(screen.getByRole('region', { name: '전체 회차 목록' })).toBeTruthy();
   });
+
+  it('copies the selected episode URL and opens the same episode from it', async () => {
+    const writeText = vi.fn().mockResolvedValue();
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+    history.replaceState(null, '', '/webtoom/?episode=01&v=2#page-3');
+    const view = render(<App />);
+    const tabs = screen.getByRole('navigation', { name: '회차 선택' });
+    fireEvent.click(within(tabs).getByRole('link', { name: '2화 · 프라이데이' }));
+    fireEvent.click(screen.getByRole('button', { name: '2화 링크 복사' }));
+    await waitFor(() => expect(screen.getByRole('status').textContent).toBe('2화 링크를 복사했어요.'));
+    const expected = new URL('/webtoom/?episode=02', location.origin).href;
+    expect(writeText).toHaveBeenCalledWith(expected);
+    view.unmount();
+    history.replaceState(null, '', new URL(expected).pathname + new URL(expected).search);
+    render(<App />);
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('프라이데이');
+  });
+
+  it('shows a selectable link if clipboard access is denied', async () => {
+    const writeText = vi.fn().mockRejectedValue(new Error('Permission denied'));
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+    history.replaceState(null, '', '/webtoom/?episode=03&v=2#page-4');
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: '3화 링크 복사' }));
+    const input = await screen.findByRole('textbox', { name: '회차 공유 주소' });
+    expect(input.value).toBe(new URL('/webtoom/?episode=03', location.origin).href);
+    expect(input.readOnly).toBe(true);
+    expect(document.activeElement).toBe(input);
+    expect(input.selectionEnd - input.selectionStart).toBe(input.value.length);
+  });
+
+  it('offers manual copying when the clipboard API is unavailable', async () => {
+    history.replaceState(null, '', '/webtoom/?episode=01');
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: '1화 링크 복사' }));
+    expect((await screen.findByRole('textbox', { name: '회차 공유 주소' })).value).toBe(new URL('/webtoom/?episode=01', location.origin).href);
+  });
 });

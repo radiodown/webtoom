@@ -1,73 +1,16 @@
 <!doctype html>
 <html lang="ko" data-theme="dark">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#171918">
-  <meta name="description" content="나만의 작은 웹툰 서재. 클로드, 프라이데이, 컨텍스트 0%를 회차별로 골라 스크롤하며 읽어보세요.">
-  <title>3화 · 컨텍스트 0% — 나의 웹툰</title>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./episodes.js" defer></script>
-  <script src="./app.js" defer></script>
-</head>
-<body>
-  <a class="skip-link" href="#reader">본문으로 바로 가기</a>
-  <header class="site-header">
-    <a class="brand" href="./" aria-label="나의 웹툰 처음으로">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4.5h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a3 3 0 0 0-2 1 3 3 0 0 0-2-1H4zM12 5.5v15" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-      <span>나의 웹툰<span class="brand-dot">.</span></span>
-    </a>
-    <span class="header-episode" id="header-episode">03 / 컨텍스트 0%</span>
-    <nav class="header-actions" aria-label="뷰어 도구">
-      <button class="icon-button" id="theme-toggle" aria-label="밝은 화면으로 변경" title="화면 테마 변경">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </button>
-      <button class="settings-button" id="settings-open" aria-haspopup="dialog">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6m8 4v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <span>보기 설정</span>
-      </button>
-    </nav>
-    <div class="reading-track" aria-hidden="true"><div id="reading-fill"></div></div>
-  </header>
-
-  <main id="main">
-    <section class="episode-intro" aria-labelledby="episode-title">
-      <div class="episode-meta"><span class="episode-badge" id="episode-badge">EPISODE 03</span><span id="page-total">9장의 이야기</span></div>
-      <div class="title-row"><h1 id="episode-title">컨텍스트 0%</h1><label class="episode-select-label"><span class="sr-only">회차 선택</span><select id="episode-select" aria-label="회차 선택"></select></label></div>
-      <p class="reading-hint">아래로 스크롤하며 천천히 읽어보세요 <span aria-hidden="true">↓</span></p>
-      <div class="resume-bar" id="resume-bar" hidden><span id="resume-text">읽던 곳이 있어요.</span><button id="resume-button">이어서 읽기 <span aria-hidden="true">↘</span></button><button class="resume-dismiss" id="resume-dismiss" aria-label="이어서 읽기 안내 닫기">×</button></div>
-    </section>
-
-    <section class="reader" id="reader" aria-label="웹툰 본문" tabindex="-1"></section>
-    <noscript><p class="noscript-message">웹툰 뷰어를 이용하려면 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-
-    <section class="episode-end" aria-labelledby="end-title">
-      <span class="end-mark" aria-hidden="true">✦</span>
-      <p class="end-eyebrow" id="end-eyebrow">EPISODE 03 · END</p>
-      <h2 id="end-title">여기까지, 오늘의 이야기.</h2>
-      <p id="end-description">3화를 모두 읽었어요. 함께해 주셔서 고마워요.</p>
-      <button class="restart-button" id="restart-button">처음부터 다시 읽기 <span aria-hidden="true">↑</span></button>
-    </section>
-  </main>
-
-  <footer class="site-footer"><span>나의 웹툰.</span><span>이야기가 머무는 작은 공간</span></footer>
-
-  <aside class="reading-position" aria-label="읽기 위치">
-    <span class="position-dot" aria-hidden="true"></span><span><strong id="current-page">1</strong><span class="position-total" id="position-total"> / 9</span></span>
-    <span class="position-divider" aria-hidden="true"></span><button id="back-to-top" aria-label="맨 위로 이동" title="맨 위로">↑</button>
-  </aside>
-
-  <dialog id="settings-dialog" aria-labelledby="settings-title">
-    <div class="dialog-heading"><div><span class="dialog-eyebrow">MAKE YOURSELF COMFORTABLE</span><h2 id="settings-title">편안하게 읽기</h2></div><button class="icon-button" id="settings-close" aria-label="보기 설정 닫기">×</button></div>
-    <label class="setting-label" for="reader-width">이미지 너비</label>
-    <select id="reader-width"><option value="640">아담하게 · 640px</option><option value="800">기본 · 800px</option><option value="1054">넓게 · 1054px</option></select>
-    <div class="setting-row"><label class="setting-label" for="image-gap">이미지 사이 간격</label><output id="gap-value" for="image-gap">12px</output></div>
-    <input id="image-gap" type="range" min="4" max="40" step="2" value="12">
-    <div class="range-labels"><span>좁게</span><span>넉넉하게</span></div>
-    <p class="settings-note">설정과 읽던 위치는 이 브라우저에 저장돼요.</p>
-    <button class="reset-button" id="settings-reset">기본 설정으로 되돌리기</button>
-  </dialog>
-  <div class="sr-only" role="status" id="status-message"></div>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#171918">
+    <meta name="description" content="나만의 작은 웹툰 서재. 클로드, 프라이데이, 컨텍스트 0%를 회차별로 골라 읽어보세요.">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <title>나의 웹툰 — 회차 목록</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>웹툰 뷰어를 이용하려면 JavaScript를 켜 주세요.</noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
